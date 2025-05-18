@@ -1,5 +1,8 @@
 name: Traducción M3U LATAM
 
+permissions:
+  contents: write
+
 on:
   workflow_dispatch:
     inputs:
@@ -34,8 +37,7 @@ jobs:
       env:
         INPUT_M3U_FILE: ${{ github.event.inputs.m3u_file }}
         INPUT_OUTPUT_FILE: ${{ github.event.inputs.output_file }}
-      run: |
-        python process_m3u.py
+      run: python process_m3u.py
 
     - name: Commit y push del resultado
       uses: EndBug/add-and-commit@v9
