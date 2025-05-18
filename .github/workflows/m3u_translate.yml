@@ -1,0 +1,49 @@
+name: Traducción M3U LATAM
+
+on:
+  workflow_dispatch:
+    inputs:
+      m3u_file:
+        description: 'Ruta del archivo M3U de entrada'
+        required: true
+        default: 'lista_original.m3u'
+      output_file:
+        description: 'Ruta del archivo M3U de salida'
+        required: true
+        default: 'lista_completa.m3u'
+
+jobs:
+  translate:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Ejecutar traducción
+      env:
+        INPUT_M3U_FILE: ${{ github.event.inputs.m3u_file }}
+        INPUT_OUTPUT_FILE: ${{ github.event.inputs.output_file }}
+      run: |
+        python process_m3u.py
+
+    - name: Mostrar resultado
+      run: |
+        echo "===== Archivo generado ====="
+        head -n 10 ${{ github.event.inputs.output_file }} || true
+
+    - name: Upload translated M3U
+      uses: actions/upload-artifact@v3
+      with:
+        name: translated-m3u
+        path: ${{ github.event.inputs.output_file }}
