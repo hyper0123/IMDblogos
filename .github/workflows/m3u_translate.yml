@@ -43,7 +43,7 @@ jobs:
         head -n 10 ${{ github.event.inputs.output_file }} || true
 
     - name: Upload translated M3U
-      uses: actions/upload-artifact@v3.1.2
+      uses: actions/upload-artifact@v2.3.1
       with:
         name: translated-m3u
         path: ${{ github.event.inputs.output_file }}
